@@ -1,0 +1,114 @@
+:root {
+  --highlight: #3d5afe;
+  --highlightHover: #7726fabb;
+  --lightGray: #424242;
+  --deemGray: #303030;
+  --dark: #121212;
+  --accent: gold;
+}
+
+/* For WebKit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+  height: 12px; /* Height of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: var(--lightGray); /* Background of the scrollbar track */
+  border-radius: 10px; /* Round corners for the track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--lightGray); /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Round corners for the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--dark); /* Color of the thumb on hover */
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin; /* Set the width of the scrollbar */
+  scrollbar-color: var(--lightGray) var(--deemGray); /* Thumb color and track color */
+}
+
+/* Firefox scrollbar styles */
+@supports (-moz-appearance: none) {
+  * {
+    scrollbar-color: var(--lightGray) var(--deemGray); /* Thumb color and track color */
+    scrollbar-width: thin; /* Thin scrollbar */
+  }
+}
+
+.compare-main {
+  display: flex;
+  /* grid-template-columns: 1fr 4fr; */
+}
+
+/* Nav */
+.compare-nav {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--highlight);
+  color: white;
+  align-items: center;
+  padding: 0.4rem 1rem;
+}
+.compare-nav-sec {
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  transition: all 250ms ease-in-out;
+  &:hover {
+    background-color: var(--highlightHover);
+  }
+}
+
+/* annotaiton div */
+.annotation-div-compare {
+  width: 25%;
+  background-color: var(--lightGray);
+  display: grid;
+}
+.number-n-list {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 1rem;
+}
+.compare-number {
+  padding: 0.3rem 0.5rem;
+  background-color: var(--accent);
+  font-size: 14px;
+  border-radius: 4px;
+}
+.compare-blank-div {
+  height: 7px;
+  width: 100%;
+  background-color: var(--dark);
+}
+.comprae-annotation-list {
+  padding: 0.5rem 1rem;
+  padding-right: 0;
+  background-color: var(--deemGray);
+  max-height: 100%;
+  overflow-y: scroll;
+}
+.comprae-annotation-list #measurements,
+.comprae-annotation-list #layers {
+  /* overflow-y: scroll; */
+  /* height: calc(50vh - 44px - 48px); */
+  color: white;
+}
+
+.compare-annotaiton-section {
+  height: calc(50vh - 44px - 31px);
+}
+
+.compare-select {
+  border: 1px solid #555555;
+  border-radius: 5px;
+  padding: 0.5rem 20px;
+  background-color: var(--lightGray);
+  width: 90%;
+  color: white;
+}
