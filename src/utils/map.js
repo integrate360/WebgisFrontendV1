@@ -15,10 +15,11 @@ import {
 import CircleStyle from "ol/style/Circle";
 import { convertUnit, formatArea, formatLength } from "./measurements";
 import { getLength, getArea } from "ol/sphere";
-import { GeoTIFF, XYZ } from "ol/source";
+// import { GeoTIFF, XYZ } from "ol/source";
 import TileLayer from "ol/layer/Tile";
 import { handleKmlKmzFiles } from "./File/KmlKmz/KmlKmzFile";
-
+import { GeoTIFF } from 'ol/source';
+import WebGLTileLayer from 'ol/layer/WebGLTile';
 export function createPinFeature(coords) {
   if (!coords) return;
   const pinFeature = new Feature({
@@ -282,64 +283,29 @@ export async function handleDrawEnd(
 }
 export function updateGeoTIFFLayer(newUrl, map, source, setAnnotationFuntion) {
   const fileExtension = extentionScrapper(newUrl);
-  if (fileExtension == "tif") {
+  if (fileExtension === "tif") {
     const newGeotiffSource = new GeoTIFF({
       sources: [
         {
           url: newUrl,
-          projection: "EPSG:32643",
         },
       ],
+      convertToRGB: true,
+      interpolate: true,
     });
-    // Create a new GeoTIFF layer
-    const geotiffLayer = new TileLayer({
+
+    const geotiffLayer = new WebGLTileLayer({
       source: newGeotiffSource,
     });
-    // Add the new layer to the map at index 1 (just above the base OSM layer)
+
     map?.getLayers()?.insertAt(2, geotiffLayer);
-    // Update the view once the new source is loaded
+
     newGeotiffSource.getView().then((viewOptions) => {
       const extent = viewOptions.extent;
       const center = [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2];
       map.getView().setCenter(center);
       map.getView().fit(extent);
     });
-    // const source = new GeoTIFF({
-    //   sources: [
-    //     {
-    //       url: newUrl,
-    //       projection: "EPSG:32643",
-    //     },
-    //   ],
-    //   normalize: true,
-    //   bands: [0, 1, 2],
-    // });
-    // // Create the layer using WebGLTile for better performance
-    // const layer = new TileLayer({
-    //   source: source,
-    //   name: "geotiff-layer", // Useful for later reference
-    // });
-    // // Remove any existing GeoTIFF layers
-    // map
-    //   .getLayers()
-    //   .getArray()
-    //   .filter((layer) => layer.get("name") === "geotiff-layer")
-    //   .forEach((layer) => map.removeLayer(layer));
-    // // Add the new layer
-    // map.addLayer(layer);
-    // source
-    //   .getView()
-    //   .then((viewOptions) => {
-    //     if (viewOptions.extent) {
-    //       map.getView().fit(viewOptions.extent, {
-    //         padding: [50, 50, 50, 50], // Add some padding
-    //         duration: 1000, // Smooth animation
-    //       });
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error loading GeoTIFF view:", error);
-    //   });
   } else if (["kml", "kmz"].includes(fileExtension)) {
     handleKmlKmzFiles(
       null,
