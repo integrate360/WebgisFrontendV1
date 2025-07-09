@@ -284,15 +284,26 @@ export async function handleDrawEnd(
 export function updateGeoTIFFLayer(newUrl, map, source, setAnnotationFuntion) {
   const fileExtension = extentionScrapper(newUrl);
   if (fileExtension === "tif") {
-    const newGeotiffSource = new GeoTIFF({
-      sources: [
-        {
-          url: newUrl,
-        },
+  const newGeotiffSource = new GeoTIFF({
+    sources: [
+      {
+        url: newUrl,
+        nodata: 255,
+      },
+    ],
+    style: {
+      color: [
+        'interpolate',
+        ['linear'],
+        ['band', 1], // grayscale band
+        0, '#0000ff', // blue
+        128, '#ffffff', // white
+        255, '#ff0000', // red
       ],
-      convertToRGB: true,
-      interpolate: true,
-    });
+    },
+    convertToRGB: true,
+    interpolate: true,
+  });
 
     const geotiffLayer = new WebGLTileLayer({
       source: newGeotiffSource,
